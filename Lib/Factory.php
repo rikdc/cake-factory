@@ -12,8 +12,10 @@ class Factory extends Object{
   }
 
   private static function checkCounter($key, $value){
-    if(strstr($key, '_id')){
-      return Factory::create($value)->field('id');
+    if($value === null) return $value;
+    if(is_array($value)){
+      $model = $value['model'];
+      return Factory::create($model)->field('id');
     }
 
     if(strstr($value, '#{n}')){
@@ -23,6 +25,24 @@ class Factory extends Object{
       $value = str_replace('#{n}', self::$counter[$key], $value);
     }
     return $value;
+  }
+
+  /**
+   * 
+   * 
+   */
+  public static function values($model, $attributes = array()){
+    $model = str_replace(' ', '', ucwords(str_replace('_', ' ', $model)));
+    $json = self::init($model);
+
+    $data = array_merge($json, $attributes);
+    $object = array();    
+
+    foreach($data as $key => $value){
+      $object[$model][$key] = self::checkCounter($key, $value);
+    }
+
+    return $object;
   }
 
   /**
