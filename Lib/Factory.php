@@ -12,6 +12,10 @@ class Factory extends Object{
   }
 
   private static function checkCounter($key, $value){
+    if(strstr($key, '_id')){
+      return Factory::create($value)->field('id');
+    }
+
     if(strstr($value, '#{n}')){
       if(!array_key_exists($key, self::$counter)) self::$counter[$key] = 0;
       self::$counter[$key]++;
