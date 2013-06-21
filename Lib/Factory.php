@@ -38,8 +38,14 @@ class Factory extends Object{
     return $object;
   }
 
-  function create($model, $attributes = array()){
-    $object = self::build();
+  public static function create($model, $attributes = array()){
+    $object = self::build($model, $attributes);
 
+    $Model = ClassRegistry::init($model);
+    $Model->useDbConfig = 'test';
+    $Model->create();
+    $Model->save($object, false);
+
+    return $object;
   }
 }
