@@ -11,6 +11,7 @@ class Factory extends Object{
     $file = new File(FACTORY . DS . "{$model}.json");
     $this->options['default'] = json_decode($file->read(), true);
 
+    $this->options['counter'] = array(); 
   }
 
   private function checkCounter($key, $value){
