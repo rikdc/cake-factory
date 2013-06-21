@@ -35,17 +35,21 @@ class Factory extends Object{
     foreach($data as $key => $value){
       $object[$model][$key] = self::checkCounter($key, $value);
     }
-    return $object;
-  }
-
-  public static function create($model, $attributes = array()){
-    $object = self::build($model, $attributes);
 
     $Model = ClassRegistry::init($model);
     $Model->useDbConfig = 'test';
     $Model->create();
-    $Model->save($object, false);
+    $Model->set($object);
 
-    return $object;
+    return $Model;
   }
+
+  public static function create($model, $attributes = array()){
+    $Model = self::build($model, $attributes);
+
+    $Model->save();
+
+    return $Model;
+  }
+
 }
