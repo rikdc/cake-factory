@@ -3,36 +3,43 @@
 App::uses('File', 'Utility');
 class Factory extends Object{
 
-  public $options = array();
+  public static $counter = array();
 
-  function __construct($model){
-    $this->options['model'] = $model;
 
+  private static function init($model){
     $file = new File(FACTORY . DS . "{$model}.json");
-    $this->options['default'] = json_decode($file->read(), true);
-
-    $this->options['counter'] = array(); 
+    return json_decode($file->read(), true);
   }
 
-  private function checkCounter($key, $value){
+  private static function checkCounter($key, $value){
     if(strstr($value, '#{n}')){
-      if(!array_key_exists($key, $this->options['counter'])) $this->options['counter'][$key] = 0;
-      $this->options['counter'][$key]++;
+      if(!array_key_exists($key, self::$counter)) self::$counter[$key] = 0;
+      self::$counter[$key]++;
 
-      $value = str_replace('#{n}', $this->options['counter'][$key], $value);
+      $value = str_replace('#{n}', self::$counter[$key], $value);
     }
     return $value;
   }
 
-  function build($attributes = array()){
-    $data = array_merge($this->options['default'], $attributes);
+  /**
+   * 
+   * Build the object
+   */
+  public static function build($model, $attributes = array()){
+    $model = str_replace(' ', '', ucwords(str_replace('_', ' ', $model)));
+    $json = self::init($model);
+
+    $data = array_merge($json, $attributes);
     $object = array();    
 
     foreach($data as $key => $value){
-      $object[$this->options['model']][$key] = $this->checkCounter($key, $value);
+      $object[$model][$key] = self::checkCounter($key, $value);
     }
     return $object;
   }
 
-  function create($attributes = array()){}
+  function create($model, $attributes = array()){
+    $object = self::build();
+
+  }
 }
