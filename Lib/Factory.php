@@ -15,7 +15,9 @@ class Factory extends Object{
     if($value === null) return $value;
     if(is_array($value)){
       $model = $value['model'];
-      return Factory::create($model)->field('id');
+      $attributes = (array_key_exists('attributes', $value)) ? $value['attributes'] : [];
+
+      return Factory::create($model, $attributes)->field('id');
     }
 
     if(strstr($value, '#{n}')){
