@@ -78,4 +78,13 @@ class Factory extends Object{
     return $Model;
   }
 
+
+  public static function populate($model, $times = 5, $attributes = array()){
+    for($i = 0; $i < $times; $i++){
+      $Model = self::build($model, $attributes);
+
+      $Model->save();
+    }
+  }
+
 }
