@@ -14,6 +14,7 @@ class Factory extends Object{
   private static function checkCounter($key, $value){
     if($value === null) return $value;
     if(is_array($value)){
+      if(!array_key_exists('model', $value)) return $value;
       $model = $value['model'];
       $attributes = (array_key_exists('attributes', $value)) ? $value['attributes'] : [];
 
