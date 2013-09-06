@@ -88,4 +88,18 @@ class Factory extends Object{
     }
   }
 
+  public static function data($model, $attributes = array()){
+    $model = str_replace(' ', '', ucwords(str_replace('_', ' ', $model)));
+    $json = self::init($model);
+
+    $data = array_merge($json, $attributes);
+    $object = array();    
+
+    foreach($data as $key => $value){
+      $object[$model][$key] = self::checkCounter($key, $value);
+    }
+
+    return $object;
+  }
+
 }
