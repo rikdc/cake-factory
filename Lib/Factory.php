@@ -19,6 +19,14 @@ class Factory extends Object
    */
   protected $model;
 
+
+  /**
+   * JSON file to be parsed
+   *
+   * @var string
+   */
+  protected $file;
+
   /**
    * Initialize everything!
    *
@@ -27,11 +35,40 @@ class Factory extends Object
   public function __construct( $name )
   {
     $this->name  = ucfirst( $name );
-    $this->model = ClassRegistry::init( $name );
+    $this->file  = FACTORY . DS . "{$this->name}.json";
 
-    $this->model->useDbConfig = 'test';
+    // validate the file's existence
+    $this->validateFile();
+
+    // configure the model
+    $this->configureModel();
+
   }
 
+
+  /**
+   * Check to see if the file exists..
+   *  or throw a tantru.. i mean error.
+   *
+   */
+  private function validateFile()
+  {
+    if(!file_exists( $this->file ))
+      throw new \Exception( "File: {$this->file} does not exist" );
+  }
+
+  /**
+   * Model configuration
+   *
+   */
+  private function configureModel()
+  {
+    // initialize the model
+    $this->model = ClassRegistry::init( $this->name );
+
+    // use the test database
+    $this->model->useDbConfig = 'test';
+  }
 
   /**
    * Return the model name to be used
@@ -51,6 +88,16 @@ class Factory extends Object
   function getModel()
   {
     return $this->model;
+  }
+
+  /**
+   * return the json file
+   *
+   * @return string
+   */
+  function getFile()
+  {
+    return $this->file;
   }
 
 }
