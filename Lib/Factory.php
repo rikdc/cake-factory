@@ -28,6 +28,8 @@ class Factory extends Object
   {
     $this->name  = ucfirst( $name );
     $this->model = ClassRegistry::init( $name );
+
+    $this->model->useDbConfig = 'test';
   }
 
 
