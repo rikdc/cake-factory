@@ -86,5 +86,20 @@ class FactorySpec extends ObjectBehavior
     ));
   }
 
+  function it_returns_the_validity_of_the_data_set()
+  {
+    $attributes = array( 'username' => 'another.username' );
+
+    $this->validates( $attributes )->shouldBeEqualTo( true );
+  }
+
+
+  function it_should_see_the_example_model_validation_rules()
+  {
+    $attributes = array( 'username' => null );
+
+    $this->validates( $attributes )->shouldBeEqualTo( false );
+  }
+
 
 }

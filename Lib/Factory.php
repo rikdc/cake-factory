@@ -87,7 +87,7 @@ class Factory extends Object
   /**
    * parse the JSON file and store it inside the attributes
    *
-   * @return Factory
+   * @return null
    */
   function parse()
   {
@@ -98,14 +98,13 @@ class Factory extends Object
 
     // convert the file into an array
     $this->data = json_decode( $content, true );
-    return $this;
   }
 
 
   /**
    * builds the model object
    *
-   * @param array $attributes override the default attributes
+   * @param  array   $attributes override the default attributes
    * @return Model
    */
   function build( $attributes = array() )
@@ -122,6 +121,18 @@ class Factory extends Object
     $this->model->set( $this->data );
 
     return $this->model;
+  }
+
+
+  /**
+   * return the validity of the model data
+   *
+   * @param  array     $attributes
+   * @return boolean
+   */
+  function validates( $attributes = array() )
+  {
+    return $this->build( $attributes )->validates();
   }
 
 
