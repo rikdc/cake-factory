@@ -27,13 +27,23 @@ class Factory extends Object
    */
   protected $file;
 
+
+  /**
+   * Attribute list to override the default JSON
+   *
+   * @var array
+   */
+  protected $attributes = array();
+
   /**
    * Initialize everything!
    *
    * @param string $name
    */
-  public function __construct( $name )
+  public function __construct( $name, $attributes = array() )
   {
+    $this->attributes = $attributes;
+
     $this->name  = ucfirst( $name );
     $this->file  = FACTORY . DS . "{$this->name}.json";
 
@@ -70,6 +80,17 @@ class Factory extends Object
     $this->model->useDbConfig = 'test';
   }
 
+
+  /**
+   * We can set the attributes away from the constructor as well
+   *
+   */
+  function setAttributes( $attributes )
+  {
+    $this->attributes = $attributes;
+  }
+
+
   /**
    * Return the model name to be used
    *
@@ -98,6 +119,16 @@ class Factory extends Object
   function getFile()
   {
     return $this->file;
+  }
+
+  /**
+   * return the attribute list
+   *
+   * @return array
+   */
+  function getAttributes()
+  {
+    return $this->attributes;
   }
 
 }

@@ -52,4 +52,14 @@ class FactorySpec extends ObjectBehavior
     $this->shouldThrow( new \Exception( "File: {$file} does not exist" ) )->during( '__construct', [ 'model' ] );
   }
 
+  function it_can_return_an_attribute_override_list()
+  {
+    $attributes = array(
+      'username' => 'another.username'
+    );
+
+    $this->setAttributes( $attributes );
+    $this->getAttributes()->shouldBeEqualTo( $attributes );
+  }
+
 }
