@@ -1,0 +1,13 @@
+{
+  "name": "cake-factory",
+  "require-dev": {
+    "phpspec/phpspec": "2.0.*@dev"
+  },
+  "config": {
+    "bin-dir": "bin",
+    "vendor-dir": "vendor/"
+  },
+  "autoload": {
+    "psr-0": {"": "Lib"}
+  }
+}
