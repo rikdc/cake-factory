@@ -126,7 +126,14 @@ class FactorySpec extends ObjectBehavior
   {
     $attributes = array( 'username' => null );
 
-    $this->create( $attributes )->validationErrors->shouldBeEqualTo( null );
+    $this->create( $attributes )->validationErrors->shouldBeEqualTo( array() );
+  }
+
+  function it_has_incremental_counters_to_avoid_duplicate_population()
+  {
+    $attributes[ 'username' ] = 'username#{n}';
+
+    $this->build( $attributes )->data[ 'User' ][ 'username' ]->shouldBe( 'username1' );
   }
 
 

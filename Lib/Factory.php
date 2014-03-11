@@ -5,6 +5,14 @@ class Factory extends Object
 {
 
   /**
+   * the marker for the incremental operator
+   *
+   * @var string
+   */
+  const INCREMENT_OPERATOR = '#{n}';
+
+
+  /**
    * the name of the model to be initialized
    *
    * @var integer
@@ -34,6 +42,17 @@ class Factory extends Object
    * @var array
    */
   protected $data = array();
+
+
+  /**
+   * Counter listing for the factory increments
+   *
+   * @var array
+   */
+  protected $counters = array();
+
+
+
 
   /**
    * Initialize everything!
@@ -83,9 +102,33 @@ class Factory extends Object
   }
 
 
+  /**
+   * lookup the counters, set and increment
+   *
+   * @return null
+   */
+  private function lookupCounters()
+  {
+    foreach( $this->data as $field => $value )
+    {
+
+      // skip if the field has no '#{n}'
+      if( !strstr( $value, self::INCREMENT_OPERATOR ) )
+        continue;
+
+      // set the counter
+      if( !array_key_exists( $field, $this->counters ) )
+        $this->counters[ $field ] = 1;
+
+      // replace the field with the countered operator
+      $this->data[ $field ] = str_replace( self::INCREMENT_OPERATOR, $this->counters[ $field ]++, $value );
+    }
+  }
+
+
 
   /**
-   * parse the JSON file and store it inside the attributes
+   * parse the JSON file and store it inside the attributes r
    *
    * @return null
    */
@@ -98,6 +141,7 @@ class Factory extends Object
 
     // convert the file into an array
     $this->data = json_decode( $content, true );
+
   }
 
 
@@ -113,6 +157,7 @@ class Factory extends Object
 
     // override the attributes
     $this->data = array_merge( $this->data, $attributes );
+    $this->lookupCounters();
 
     // make sure this resets the model
     $this->model->create();
@@ -146,6 +191,19 @@ class Factory extends Object
   {
     $this->build( $attributes )->save( null, false );
     return $this->model;
+  }
+
+
+  /**
+   * Repeats create() for database population
+   *
+   * @param  array   $attributes
+   * @return null
+   */
+  function populate( $count = 5, $attributes = array() )
+  {
+    for( $i = 0; $i < $count; $i++ )
+      $this->build( $attributes )->save( null, false );
   }
 
 
