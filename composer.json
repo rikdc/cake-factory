@@ -1,6 +1,13 @@
 {
   "name": "cake-factory",
+  "repositories": [
+    {
+      "type": "pear",
+      "url": "http://pear.cakephp.org"
+    }
+  ],
   "require-dev": {
+    "pear-cakephp/cakephp": ">=2.4.0",
     "phpspec/phpspec": "2.0.*@dev"
   },
   "config": {
@@ -8,6 +15,8 @@
     "vendor-dir": "vendor/"
   },
   "autoload": {
-    "psr-0": {"": "Lib"}
+    "psr-0": {
+      "": "Lib"
+    }
   }
 }
