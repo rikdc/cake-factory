@@ -18,6 +18,42 @@ The default location of your factories in the bootstrap here `Plugin/CakeFactory
 	define('FACTORY', ROOT . DS . APP_DIR . DS . 'Test' . DS . 'Factory');
 
 
+## Usage
+
+
+### build( [ $attributes = array() ] )
+
+This builds your JSON file into an object and returns a Cake `Model` object
+
+    $factory = new Factory( 'user' );
+    $factory->build()->save();
+   
+You can override the attributes so you can test validation
+    
+    $factory = new Factory( 'user' );
+    $factory->build(array( 'username' => null ))->validates();
+
+### validates( [ $attributes = array() ] )
+
+I found that I use this a lot so I just made it a function.
+
+    $factory = new Factory( 'user' );
+    $factory->validates(array( 'username' => null )); # true or false
+
+### create( [array $attributes] );
+ 
+Create while skipping validations
+
+    $factory = new Factory( 'user' );
+    $factory->create();
+ 
+### populate( [ $count = 5 ], [ $attributes = array() ] )
+
+Populates the database.
+
+    $factory = new Factory( 'user' );
+    $factory->populate( 20 );
+
 ## Creating Factories
 
 You can create your factories by default inside your `Test/Factory/`. Name it with `ModelName.json`
@@ -37,13 +73,7 @@ So, if you have a user that's related to a roles file, you'll have files `User.j
 	{
 		"username": "username#{n}",
 		"password": "a valid password",
-		"password_confirmation": "a valid password",
-		"role_id": {
-			"model": "Role",
-			"attributes": {
-				"name": "Standard"
-			}
-		}
+		"password_confirmation": "a valid password"
 	}
 	
 	
@@ -53,7 +83,7 @@ So, if you have a user that's related to a roles file, you'll have files `User.j
 
 Just add `#{n}` inside and it'll be the counter for unique stuff
 
-### Associating Factories
+### ~~Associating Factories~~
 
 Added this just in case custom relations are used
 
@@ -61,7 +91,7 @@ Added this just in case custom relations are used
 		"model": "Role"
 	}
 	
-### Overriding Association Values
+### ~~Overriding Association Values~~
 
 You can see above, but wait, YOU CAN NEST IT!
 
