@@ -136,6 +136,18 @@ class Factory extends Object
   }
 
 
+  /**
+   * Bypass the validations and save to the database
+   *
+   * @param  array   $attributes
+   * @return Model
+   */
+  function create( $attributes = array() )
+  {
+    $this->build( $attributes )->save( null, false );
+    return $this->model;
+  }
+
 
   /**
    * Return the model name to be used

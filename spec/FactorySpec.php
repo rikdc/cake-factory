@@ -4,6 +4,7 @@ namespace spec;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use \PDO;
 
 require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
@@ -13,6 +14,26 @@ class FactorySpec extends ObjectBehavior
   function let()
   {
     $this->beConstructedWith( 'user' );
+  }
+
+  function letgo()
+  {
+    try
+    {
+      $url = 'sqlite:' . APP . 'Config' . DS . 'factory.db';
+
+      // initialize the PDO object
+      $database = new \PDO( $url );
+      $database->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+      // $query  = "DELETE FROM users; VACUUM;";
+      $database->exec( 'DELETE FROM users;' );
+      $database->exec( 'VACUUM;' );
+
+      // clean the database handler
+      $database = null;
+    }
+    catch( \Exception $exception ) {}
   }
 
   function it_is_initializable()
@@ -99,6 +120,13 @@ class FactorySpec extends ObjectBehavior
     $attributes = array( 'username' => null );
 
     $this->validates( $attributes )->shouldBeEqualTo( false );
+  }
+
+  function it_bypasses_validation_on_creating_factories()
+  {
+    $attributes = array( 'username' => null );
+
+    $this->create( $attributes )->validationErrors->shouldBeEqualTo( null );
   }
 
 
