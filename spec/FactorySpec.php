@@ -62,4 +62,13 @@ class FactorySpec extends ObjectBehavior
     $this->getAttributes()->shouldBeEqualTo( $attributes );
   }
 
+  function it_parses_the_json_file_and_sets_it()
+  {
+    $this->parse()->getData()->shouldBeEqualTo(array(
+      'username' => 'factory.username',
+      'password' => 'factory.password',
+      'email'    => 'emailaddress@aeolu.com'
+    ));
+  }
+
 }

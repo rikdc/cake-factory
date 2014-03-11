@@ -35,6 +35,14 @@ class Factory extends Object
    */
   protected $attributes = array();
 
+
+  /**
+   * The major data list that can be overridden
+   *
+   * @var array
+   */
+  protected $data = array();
+
   /**
    * Initialize everything!
    *
@@ -79,6 +87,26 @@ class Factory extends Object
     // use the test database
     $this->model->useDbConfig = 'test';
   }
+
+
+
+  /**
+   * parse the JSON file and store it inside the attributes
+   *
+   * return Factory
+   */
+  function parse()
+  {
+    $file = new File( $this->file );
+
+    // read the contents
+    $content = $file->read();
+
+    // convert the file into an array
+    $this->data = json_decode( $content, true );
+    return $this;
+  }
+
 
 
   /**
@@ -129,6 +157,16 @@ class Factory extends Object
   function getAttributes()
   {
     return $this->attributes;
+  }
+
+  /**
+   * return the model data
+   *
+   * @return array
+   */
+  function getData()
+  {
+    return $this->data;
   }
 
 }
