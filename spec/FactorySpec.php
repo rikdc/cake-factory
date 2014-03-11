@@ -5,12 +5,7 @@ namespace spec;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-define( 'ROOT', dirname(dirname(__FILE__)) );
-define( 'DS', DIRECTORY_SEPARATOR );
-define( 'FACTORY', ROOT . DS . 'Factory' );
-
-// load the CakePHP global methods to not fuck things up
-include_once ROOT . DS . 'vendor' . DS . 'pear-pear.cakephp.org' . DS . 'CakePHP' . DS . 'Cake' . DS . 'basics.php';
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'bootstrap.php';
 
 class FactorySpec extends ObjectBehavior
 {
@@ -52,15 +47,11 @@ class FactorySpec extends ObjectBehavior
     $this->shouldThrow( new \Exception( "File: {$file} does not exist" ) )->during( '__construct', [ 'model' ] );
   }
 
-  function it_can_return_an_attribute_override_list()
+  function its_parse_should_return_itself()
   {
-    $attributes = array(
-      'username' => 'another.username'
-    );
-
-    $this->setAttributes( $attributes );
-    $this->getAttributes()->shouldBeEqualTo( $attributes );
+    $this->parse()->shouldReturnAnInstanceOf( 'Factory' );
   }
+
 
   function it_parses_the_json_file_and_sets_it()
   {
@@ -70,5 +61,16 @@ class FactorySpec extends ObjectBehavior
       'email'    => 'emailaddress@aeolu.com'
     ));
   }
+
+  function its_build_should_return_itself()
+  {
+    $this->build()->shouldReturnAnInstanceOf( 'Model' );
+  }
+
+  function its_attributes_are_overridden_with_set_attributes()
+  {
+    // $attributes = array( 'username' => 'another.username' );
+  }
+
 
 }

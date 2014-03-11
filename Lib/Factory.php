@@ -29,14 +29,6 @@ class Factory extends Object
 
 
   /**
-   * Attribute list to override the default JSON
-   *
-   * @var array
-   */
-  protected $attributes = array();
-
-
-  /**
    * The major data list that can be overridden
    *
    * @var array
@@ -68,6 +60,7 @@ class Factory extends Object
    * Check to see if the file exists..
    *  or throw a tantru.. i mean error.
    *
+   * @return null
    */
   private function validateFile()
   {
@@ -78,6 +71,7 @@ class Factory extends Object
   /**
    * Model configuration
    *
+   * @return null
    */
   private function configureModel()
   {
@@ -93,7 +87,7 @@ class Factory extends Object
   /**
    * parse the JSON file and store it inside the attributes
    *
-   * return Factory
+   * @return Factory
    */
   function parse()
   {
@@ -108,15 +102,17 @@ class Factory extends Object
   }
 
 
-
   /**
-   * We can set the attributes away from the constructor as well
-   *
+   * builds
    */
-  function setAttributes( $attributes )
+  function build()
   {
-    $this->attributes = $attributes;
+    $this->model->set( [ 'username' => 'hello' ] );
+    echo print_r( $this->model->data, true );
+
+    return $this->model;
   }
+
 
 
   /**
@@ -147,16 +143,6 @@ class Factory extends Object
   function getFile()
   {
     return $this->file;
-  }
-
-  /**
-   * return the attribute list
-   *
-   * @return array
-   */
-  function getAttributes()
-  {
-    return $this->attributes;
   }
 
   /**
