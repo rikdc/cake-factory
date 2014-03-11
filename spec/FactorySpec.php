@@ -47,29 +47,43 @@ class FactorySpec extends ObjectBehavior
     $this->shouldThrow( new \Exception( "File: {$file} does not exist" ) )->during( '__construct', [ 'model' ] );
   }
 
-  function its_parse_should_return_itself()
-  {
-    $this->parse()->shouldReturnAnInstanceOf( 'Factory' );
-  }
-
-
   function it_parses_the_json_file_and_sets_it()
   {
-    $this->parse()->getData()->shouldBeEqualTo(array(
+    $this->parse();
+    $this->getData()->shouldBeEqualTo(array(
       'username' => 'factory.username',
       'password' => 'factory.password',
       'email'    => 'emailaddress@aeolu.com'
     ));
   }
 
-  function its_build_should_return_itself()
+  function its_build_returns_an_instance_of_model()
   {
     $this->build()->shouldReturnAnInstanceOf( 'Model' );
   }
 
+  function it_builds_the_model_with_the_json_data()
+  {
+    $this->build()->data->shouldBeEqualTo(array(
+      'User' => array(
+        'username' => 'factory.username',
+        'password' => 'factory.password',
+        'email'    => 'emailaddress@aeolu.com'
+      )
+    ));
+  }
+
   function its_attributes_are_overridden_with_set_attributes()
   {
-    // $attributes = array( 'username' => 'another.username' );
+    $attributes = array( 'username' => 'another.username' );
+
+    $this->build( $attributes )->data->shouldBeEqualTo(array(
+      'User' => array(
+        'username' => 'another.username',
+        'password' => 'factory.password',
+        'email'    => 'emailaddress@aeolu.com'
+      )
+    ));
   }
 
 

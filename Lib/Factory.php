@@ -103,12 +103,23 @@ class Factory extends Object
 
 
   /**
-   * builds
+   * builds the model object
+   *
+   * @param array $attributes override the default attributes
+   * @return Model
    */
-  function build()
+  function build( $attributes = array() )
   {
-    $this->model->set( [ 'username' => 'hello' ] );
-    echo print_r( $this->model->data, true );
+    $this->parse();
+
+    // override the attributes
+    $this->data = array_merge( $this->data, $attributes );
+
+    // make sure this resets the model
+    $this->model->create();
+
+    // set the fields
+    $this->model->set( $this->data );
 
     return $this->model;
   }
