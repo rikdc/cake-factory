@@ -107,7 +107,11 @@ You can see above, but wait, YOU CAN NEST IT!
 		}
 	}
 	
-	
+## Testing
+
+Now I tested this with [PHPSpec](http://phpspec.net). Just run `composer update` and `phpspec run` to see all the test cases.
+
+
 ## License
 
 This is released under WTFPL. So, do what the eff, you want with it. Though tell me so I can feel that fuzzy self-esteem stuff.
