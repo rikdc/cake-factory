@@ -83,7 +83,7 @@ So, if you have a user that's related to a roles file, you'll have files `User.j
 
 Just add `#{n}` inside and it'll be the counter for unique stuff
 
-### ~~Associating Factories~~
+### Associating Factories
 
 Added this just in case custom relations are used
 
@@ -91,7 +91,7 @@ Added this just in case custom relations are used
 		"model": "Role"
 	}
 	
-### ~~Overriding Association Values~~
+### Overriding Association Values
 
 You can see above, but wait, YOU CAN NEST IT!
 
