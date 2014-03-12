@@ -13,27 +13,13 @@ class FactorySpec extends ObjectBehavior
 
   function let()
   {
+    createDatabase();
     $this->beConstructedWith( 'user' );
   }
 
   function letgo()
   {
-    try
-    {
-      $url = 'sqlite:' . APP . 'Config' . DS . 'factory.db';
-
-      // initialize the PDO object
-      $database = new \PDO( $url );
-      $database->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-      // $query  = "DELETE FROM users; VACUUM;";
-      $database->exec( 'DELETE FROM users;' );
-      $database->exec( 'VACUUM;' );
-
-      // clean the database handler
-      $database = null;
-    }
-    catch( \Exception $exception ) {}
+    deleteDatabase();
   }
 
   function it_is_initializable()
@@ -74,7 +60,13 @@ class FactorySpec extends ObjectBehavior
     $this->getData()->shouldBeEqualTo(array(
       'username' => 'factory.username',
       'password' => 'factory.password',
-      'email'    => 'emailaddress@aeolu.com'
+      'email'    => 'emailaddress@aeolu.com',
+      "role_id"  => array(
+        "model"       => "Role",
+        "attributes"  => array(
+          "name"  => "Member"
+        )
+      )
     ));
   }
 
@@ -85,24 +77,30 @@ class FactorySpec extends ObjectBehavior
 
   function it_builds_the_model_with_the_json_data()
   {
-    $this->build()->data->shouldBeEqualTo(array(
+    $attributes = array( 'role_id' => null );
+    $this->build( $attributes )->data->shouldBeEqualTo(array(
       'User' => array(
         'username' => 'factory.username',
         'password' => 'factory.password',
-        'email'    => 'emailaddress@aeolu.com'
+        'email'    => 'emailaddress@aeolu.com',
+        "role_id"  => null
       )
     ));
   }
 
   function its_attributes_are_overridden_with_set_attributes()
   {
-    $attributes = array( 'username' => 'another.username' );
+    $attributes = array(
+      'username' => 'another.username',
+      'role_id'  => null
+    );
 
     $this->build( $attributes )->data->shouldBeEqualTo(array(
       'User' => array(
         'username' => 'another.username',
         'password' => 'factory.password',
-        'email'    => 'emailaddress@aeolu.com'
+        'email'    => 'emailaddress@aeolu.com',
+        'role_id'  => null
       )
     ));
   }
@@ -134,6 +132,11 @@ class FactorySpec extends ObjectBehavior
     $attributes[ 'username' ] = 'username#{n}';
 
     $this->build( $attributes )->data[ 'User' ][ 'username' ]->shouldBe( 'username1' );
+  }
+
+  function it_can_associate_models_on_the_fly()
+  {
+    $this->create()->field( 'role_id' )->shouldBeLike( 6 );
   }
 
 

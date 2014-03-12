@@ -112,6 +112,12 @@ class Factory extends Object
     foreach( $this->data as $field => $value )
     {
 
+      // save the associated model
+      if(is_array( $value )){
+        $this->data[ $field ] = $this->saveAssociated( $value );
+        continue;
+      }
+
       // skip if the field has no '#{n}'
       if( !strstr( $value, self::INCREMENT_OPERATOR ) )
         continue;
@@ -125,6 +131,24 @@ class Factory extends Object
     }
   }
 
+
+  /**
+   * Save the model being asssociated
+   *
+   * @param  array  $data
+   * @return integer
+   */
+  private function saveAssociated( $data )
+  {
+    $model      = strtolower( $data[ 'model' ] );
+    $attributes = array();
+
+    if(array_key_exists( 'attributes', $data ))
+      $attributes = $data[ 'attributes' ];
+
+    $factory = new self( $model );
+    return $factory->create( $attributes )->field( 'id' );
+  }
 
 
   /**
