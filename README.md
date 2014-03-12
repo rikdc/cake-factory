@@ -4,18 +4,18 @@
 
 Clone the application inside your Plugins folder
 
-	$ git clone https://github.com/aeolu/cakefactory.git CakeFactory
+	$ git clone https://github.com/jaggyspaghetti/cake-factory.git Factory
 	
 Load it and make sure you read the Plugin's bootstrap folder. Append this to your `Config/bootstrap.php`:
 
-	CakePlugin::load('CakeFactory', array('bootstrap' => true));
+	CakePlugin::load( 'Factory', array('bootstrap' => true) );
 	
 
 ## Settings
 
-The default location of your factories in the bootstrap here `Plugin/CakeFactory/Config/bootstrap.php`
+The default location of your factories in the bootstrap here `Plugin/Factory/Config/bootstrap.php`
 
-	define('FACTORY', ROOT . DS . APP_DIR . DS . 'Test' . DS . 'Factory');
+	define( 'FACTORY', ROOT . DS . APP_DIR . DS . 'Test' . DS . 'Factory' );
 
 
 ## Usage
