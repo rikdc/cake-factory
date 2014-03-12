@@ -1,5 +1,11 @@
 {
   "username": "factory.username",
   "password": "factory.password",
-  "email":    "emailaddress@aeolu.com"
+  "email":    "emailaddress@aeolu.com",
+  "role_id":  {
+    "model":      "Role",
+    "attributes": {
+      "name": "Member"
+    }
+  }
 }
