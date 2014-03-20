@@ -63,7 +63,7 @@ class Factory extends Object
   {
     $this->attributes = $attributes;
 
-    $this->name  = ucfirst( $name );
+    $this->name  = Inflector::classify( $name );
     $this->file  = FACTORY . DS . "{$this->name}.json";
 
     // validate the file's existence
